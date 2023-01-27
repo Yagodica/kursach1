@@ -19,7 +19,7 @@ app.config.from_object(BaseConfig)
 cache = Cache(app)
 
 buf = {}
-myclient = pymongo.MongoClient("mongodb://192.168.0.51:27017/")
+myclient = pymongo.MongoClient("mongodb://db.local:27017/")
 mydb = myclient["test_db"]
 mycol = mydb["test_db"]
      

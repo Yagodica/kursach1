@@ -10,23 +10,47 @@ services:
     volumes:
       - ./db/init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
     restart: always
+    networks:
+      network:
+        ipv4_address: 172.8.0.2
+        aliases:
+          - db.local
 
   web:
     build: ./pymongo
+    image: yagoda/web:latest
     container_name: flask
     restart: always
     ports:
       - "5000:5000"
+    networks:
+      network:
+        ipv4_address: 172.8.0.3
 
   redis:
     image: redis
     container_name: redis-container
     ports:
       - "6379:6379"
+    networks:
+      network:
+        ipv4_address: 172.8.0.4
 
   nginx:
     build: ./nginx
+    image: yagoda/nginxtest:latest
     container_name: nginx
     restart: always
     ports:
       - "80:80"
+    networks:
+      network:
+        ipv4_address: 172.8.0.5
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.8.0.0/16
+          gateway: 172.8.0.1
